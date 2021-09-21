@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, {useState, Fragment} from "react";
 
 function CellsComponent(props) {
-    const hash = props.hash;
+    const tokenId = props.tokenId;
     let [svg, setSVG] = useState(null);
 
-    if (props.ACSigner !== null) { 
+    if (props.NFTSigner !== null) { 
         async function c() {
-            const blob = await props.ACSigner.tokenURI(hash);
+            const blob = await props.NFTSigner.tokenURI(tokenId);
             const response = await fetch(blob); // parses base64 encoded blob to an HTML response
             const metadata = await response.json(); // parse HTML response to JSON form
             const imageResponse = await fetch(metadata.image);
@@ -15,7 +15,6 @@ function CellsComponent(props) {
         }
         c();
     }
-
 
     return (
         <div style={{display:"flex", justifyContent:"center"}} 

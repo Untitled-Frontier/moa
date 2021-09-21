@@ -1,7 +1,7 @@
 
-## Anchor Certificates
+## Painting of Forgotten Souls
 
-Certificate NFTs for the short story: The Line To Anchor City. All metadata + art is on-chain.
+Paintings of Souls NFTs for the short story: Memories of Atlas. All metadata + art is on-chain.
 
 ### Technicals
 

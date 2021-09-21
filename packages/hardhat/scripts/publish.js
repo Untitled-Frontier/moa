@@ -10,8 +10,8 @@ async function main() {
   if (!fs.existsSync(publishDir)){
     fs.mkdirSync(publishDir);
   }
-  fs.copyFile(buildDir+"/AnchorCertificates.sol/AnchorCertificates.json", publishDir+"/AnchorCertificates.json", (err) => { console.log(err)});
-  console.log("Publishing",chalk.cyan('AC'), "to",chalk.yellow(publishDir))
+  fs.copyFile(buildDir+"/Souls.sol/Souls.json", publishDir+"/Souls.json", (err) => { console.log(err)});
+  console.log("Publishing",chalk.cyan('NFT'), "to",chalk.yellow(publishDir))
 }
 main().then(() => {
   console.log('If this process does not automatically exit, you may do so now.');

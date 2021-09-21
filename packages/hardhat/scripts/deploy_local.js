@@ -1,13 +1,22 @@
+// import { ethers } from "ethers";
+
 async function main() {
-    const AC = await ethers.getContractFactory("AnchorCertificates");
+    const S = await ethers.getContractFactory("Souls");
 
-    // 1624888800 = Mon Jun 28 2021 14:00:00 GMT+0000
-    // 1627308000 = Mon Jul 26 2021 14:00:00 GMT+0000
-    const ac = await AC.deploy("Anchor Certificates", "ACS","0xaF69610ea9ddc95883f97a6a3171d52165b69B03",  '100', '2627308000');
-    await ac.deployed() ;
-    const acAddress = await ac.address;
+    const s = await S.deploy("Souls", "SOULS","0xaF69610ea9ddc95883f97a6a3171d52165b69B03", "0xaF69610ea9ddc95883f97a6a3171d52165b69B03", '100', '2627308000', '0x600a4446094C341693C415E6743567b9bfc8a4A8');
+    const sd = await s.deployed();
+    const sAddress = await s.address;
+    const id = await s.newlyMinted();
+    const ig = await sd.estimateGas.tokenURI(id);
+    const i = await s.generateImage(id);
+    const t = await s.generateTraits(id);
+    const u = await s.tokenURI(id);
 
-    console.log("AC deployed to: ", acAddress);
+    console.log(ig.toString());
+    console.log(t.toString());
+    console.log(u.toString());
+    console.log("Souls deployed to: ", sAddress);
+    console.log(i);
   }
   
   main()

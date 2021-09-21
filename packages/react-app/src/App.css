@@ -10,19 +10,19 @@ h2, h3 {
 
 .App {
   text-align: left;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0px auto auto;
 }
 
 .section {
   text-align: left;
-  max-width: 500px;
+  max-width: 600px;
   margin: 0px auto auto;
 }
 
 .account {
   text-align: right;
-  max-width: 500px;
+  max-width: 600px;
   margin: 20px auto 4px;
 }
 

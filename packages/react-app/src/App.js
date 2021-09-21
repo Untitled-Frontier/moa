@@ -6,7 +6,6 @@ import "./App.css";
 import { Account } from "./components"
 
 import IntroPage from './components/IntroPage.js';
-import StatsPage from './components/StatsPage.js';
 
 import { usePoller } from "./hooks";
 
@@ -15,7 +14,7 @@ import Transactor from "./helpers/Transactor.js";
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 // Artifacts
-import ACJSON from "./contracts/AnchorCertificates.json";
+import NFTJson from "./contracts/Souls.json";
 
 function App() {
   /* Universal State*/
@@ -28,12 +27,13 @@ function App() {
   const [injectedChainId, setInjectedChainId] = useState(null);
   const [hardcodedChainId, setHardcodedChainId] = useState(null); // set it manually
 
-  let ACAddress = "0x600a4446094C341693C415E6743567b9bfc8a4A8"; // mainnet
+  let NFTAddress = "0x6dae8a922b66225de1728bd9e5f2b7a4bdd4699b";
 
-  let dfPrice = "0.01"; // ~$20 @ 2000/ETH
-  let dxPrice = "0.05"; // ~$100 @ 2000/ETH
+  // should be changed in contracts, test, UI
+  let dfPrice = "0.01"; // ~$30
+  let dxPrice = "0.068"; // ~$200
 
-  const [ACSigner, setACSigner] = useState(null);
+  const [NFTSigner, setNFTSigner] = useState(null);
 
   // NOTE: Currently not being used in Transactor, but keeping it in the code in case I want to turn it back on.
   // Currently, it's expected that the web3 provider sets it (eg, MetaMask fills it in).
@@ -52,7 +52,6 @@ function App() {
               setHardcodedChainId(1); // mainnet
               // setHardcodedChainId(4); // rinkeby
               // setHardcodedChainId(id); // local (uses injectedProvider)
-              
           }
       }
   } 
@@ -62,21 +61,21 @@ function App() {
     async function loadSigners() {
       if(injectedChainId !== null) {
         const signer = await injectedProvider.getSigner();
-        const ACSigner = new ethers.Contract(ACAddress, ACJSON.abi, signer);
-        setACSigner(ACSigner);
+        const NFTSigner = new ethers.Contract(NFTAddress, NFTJson.abi, signer);
+        setNFTSigner(NFTSigner);
       }
     }
     loadSigners();
   }, [injectedChainId]);
 
 
-  async function mintAnchorCertificate(type) {
+  async function mintNFT(type) {
     let val;
     if(type === "default") { val = ethers.utils.parseEther(dfPrice); }
     if(type === "deluxe") { val = ethers.utils.parseEther(dxPrice); }
     const tx = Transactor(injectedProvider, gasPrice);
     setMinting(true);
-    tx(ACSigner.functions.mintCertificate({value: val}), async function (update) {
+    tx(NFTSigner.functions.mintSoul({value: val}), async function (update) {
       /*Used for testing UI*/
       // await new Promise(resolve => setTimeout(resolve, 5000));
       console.log(update);
@@ -96,13 +95,49 @@ function App() {
         if(update.code === 4001) {
           setMinting(false);
         }
+
+        /* if too high gas limit */
+        if(update.code === "UNPREDICTABLE_GAS_LIMIT") {
+          setMinting(false);
+        }
       }
     });
   }
 
-  // mainnet
+  async function claimSoul(tokenId) {
+    const tx = Transactor(injectedProvider, gasPrice);
+    setMinting(true);
+    tx(NFTSigner.functions.claimSoul(tokenId), async function (update) {
+      /*Used for testing UI*/
+      // await new Promise(resolve => setTimeout(resolve, 5000));
+      console.log(update);
+      console.log(update.eventCode);
+      console.log(update.code);
+      if(update.eventCode === "txConfirmed" || update.confirmations === 1) {
+        const txResponse = await injectedProvider.getTransaction(update.hash);
+        console.log(txResponse);
+        const receipt = await txResponse.wait();
+        console.log(receipt);
+        const tokenId = receipt.logs[0].topics[3];
+        setTokenId(tokenId);
+        setMinting(false);
+      } 
+
+      if(update.code !== undefined) {
+        /* if user denies tx */
+        if(update.code === 4001) {
+          setMinting(false);
+        }
+
+        /* if too high gas limit */
+        if(update.code === "UNPREDICTABLE_GAS_LIMIT") {
+          setMinting(false);
+        }
+      }
+    });
+  }
+
   const graphURI = 'https://api.thegraph.com/subgraphs/name/simondlr/tlatc';
-  // const graphURI = 'http://localhost:8000/subgraphs/name/simondlr/neolastics-subgraph';
 
   const client = new ApolloClient({
     uri: graphURI,
@@ -122,18 +157,15 @@ function App() {
       <Route exact path="/">
           <IntroPage
             address={address}
-            ACSigner={ACSigner}
+            NFTSigner={NFTSigner}
             injectedChainId={injectedChainId}
             hardcodedChainId={hardcodedChainId}
-            mintAnchorCertificate={mintAnchorCertificate}
+            mintNFT={mintNFT}
+            claimSoul={claimSoul}
             tokenId={tokenId}
             minting={minting}
             dfPrice={dfPrice}
             dxPrice={dxPrice}
-          />
-      </Route>
-      <Route path="/stats">
-          <StatsPage
           />
       </Route>
       </Switch>

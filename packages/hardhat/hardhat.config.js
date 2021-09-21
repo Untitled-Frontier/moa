@@ -17,17 +17,14 @@ module.exports = {
     },
     hardhat: {
       accounts: defaultAccounts(),
-      gas: 9500000,
     },
     mainnet: {
       url: `https://mainnet.infura.io/v3/${infuraID}`,
       accounts: [deployAccounts[0].privateKey],
-      gasPrice: 25e9
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${infuraID}`,
       accounts: [deployAccounts[0].privateKey],
-      gasPrice: 10e9
     }
   },
   etherscan: {
