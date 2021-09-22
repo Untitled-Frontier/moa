@@ -18,6 +18,7 @@ function IntroPage(props) {
       certificates(where: { owner: $owner}) {
         id
         owner
+        moaClaimed
       }
     }
     `
@@ -61,7 +62,9 @@ function IntroPage(props) {
 
         const certHTML = <Fragment>
           {savedData.certificates.map(function(cert){
-            return <Fragment>{cert.id}<br /></Fragment>;
+            let claimedIdStyle;
+            if (cert.moaClaimed === true) { claimedIdStyle = {"text-decoration": "line-through"}; }
+            return <Fragment> <span style={claimedIdStyle}>{cert.id}</span><br /></Fragment>;
           })}
         </Fragment>
 
@@ -109,12 +112,13 @@ function IntroPage(props) {
           By minting, you agree to the <a href="https://github.com/Untitled-Frontier/tlatc/blob/master/TOS_PP.pdf">Terms of Service</a>.
           <br />
           <br />
-          To see what Anchor Certificate IDs you own, fetch it with the button below. It won't display if it's already been used to claim a fully painted soul or not.
+          To see what Anchor Certificate IDs you own, fetch it with the button below. If it has already been claimed, it will have a line striked through it. Do not use these IDs. 
           <br />
           <br />
           <Button onClick={() => getOwnedCerts({ variables: { owner: props.address.toLowerCase() } })}>
             Fetch Anchor Certificate IDs
           </Button>
+          <br />
           <br />
           </Fragment>
 
