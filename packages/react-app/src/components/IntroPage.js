@@ -82,14 +82,14 @@ function IntroPage(props) {
           const newMintHTML = <Fragment>
             The campaign runs from Friday 24 September 2021 at 14:00:00 GMT and will last until 22 October 14:00 GMT. <br />
             <br />
-            {props.dfPrice} ETH (~$30). Available until 22 October 14:00 GMT. <br />
+            {props.dfPrice} ETH (~$30). Open, Generative Edition. Available until 22 October 14:00 GMT. <br />
             <Button size={"small"} disabled={disabled} loading={props.minting} onClick={mintDefaultNFT}>
                 Mint Sketched Soul.
             </Button>
             <br />
             <br />
-            {props.dxPrice} ETH (~$200). Available until 96 are sold, or until 22 October 14:00 GMT.<br />
-            <Button size={"small"} disabled={disabled} loading={props.minting} onClick={mintDeluxeNFT}>
+            {props.dxPrice} ETH (~$200). (Sold out!)<br />
+            <Button size={"small"} disabled={true} loading={props.minting} onClick={mintDeluxeNFT}>
                 Mint Fully Painted Soul.
             </Button>
             <br />
@@ -161,7 +161,7 @@ function IntroPage(props) {
         <br />
         <br />
         <h2>[] Fully Painted Souls</h2>
-        Fully painted souls can be claimed for free (besides gas costs) if you own any Anchor Certificate (160 of both deluxe and default) from the previous 'Logged Universe' story. OR
+        Fully painted souls can be claimed for free (besides gas costs) if you own any Anchor Certificate (160 of both deluxe and default) from the previous 'Logged Universe' story. There is no snapshot. OR
         you can pay ~$200 (0.068 ETH) to generate a new soul to a maximum of 96 newly minted ones. This would bring the total to a maximum of 256 fully painted souls (160 claimable fully painted souls + 96 buyable fully painted souls). 
         To claim a fully painted soul is restricted by the time window. If you own an Anchor Certificate, it must be used to claim a soul within the campaign window.
         <br />
