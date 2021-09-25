@@ -7,6 +7,8 @@ import "./utils/Base64.sol";
 
 import "./SoulsDescriptor.sol";
 
+// import "hardhat/console.sol";
+
 /**
  * @dev Implementation of https://eips.ethereum.org/EIPS/eip-721[ERC721] Non-Fungible Token Standard, including
  * the Metadata extension, but not including the Enumerable extension, which is available separately as
@@ -148,6 +150,6 @@ contract Souls is ERC721 {
 
     function withdrawETH() public {
         require(msg.sender == collector, "NOT_COLLECTOR");
-        recipient.transfer(address(this).balance);
+        recipient.call{value: address(this).balance}(""); // this is safe because the recipient is known
     }
 }

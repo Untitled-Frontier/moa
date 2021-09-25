@@ -287,8 +287,8 @@
       ]
     },
     "/Users/simondlr2/code/ethereum/moa/moa_app/packages/hardhat/contracts/Souls.sol": {
-      "lastModificationDate": 1632231077634,
-      "contentHash": "e57a75f5d25323320240ae631cebbb68",
+      "lastModificationDate": 1632600467252,
+      "contentHash": "f2b074d4aa6051a3f963bfe1bb132ddb",
       "sourceName": "contracts/Souls.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -458,6 +458,151 @@
       ],
       "artifacts": [
         "console"
+      ]
+    },
+    "/Users/simondlr2/code/ethereum/moa/moa_app/packages/hardhat/contracts/splits/SplitFactory.sol": {
+      "lastModificationDate": 1632588030329,
+      "contentHash": "017e4c5b57bdb5f745484f10b8debadb",
+      "sourceName": "contracts/splits/SplitFactory.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./SplitProxy.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "SplitFactory"
+      ]
+    },
+    "/Users/simondlr2/code/ethereum/moa/moa_app/packages/hardhat/contracts/splits/SplitProxy.sol": {
+      "lastModificationDate": 1632599765522,
+      "contentHash": "c112294da3e0c7cc82499ff2e383b300",
+      "sourceName": "contracts/splits/SplitProxy.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./SplitStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "ISplitFactory",
+        "SplitProxy"
+      ]
+    },
+    "/Users/simondlr2/code/ethereum/moa/moa_app/packages/hardhat/contracts/splits/SplitStorage.sol": {
+      "lastModificationDate": 1632588009854,
+      "contentHash": "bc0e22ca0e9ed00aa908bce295415f48",
+      "sourceName": "contracts/splits/SplitStorage.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "SplitStorage"
+      ]
+    },
+    "/Users/simondlr2/code/ethereum/moa/moa_app/packages/hardhat/contracts/splits/Splitter.sol": {
+      "lastModificationDate": 1632587847121,
+      "contentHash": "b693decb1e6c11e36c7e1b6337c5dd5d",
+      "sourceName": "contracts/splits/Splitter.sol",
+      "solcConfig": {
+        "version": "0.8.4",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./SplitStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "IERC20",
+        "IWETH",
+        "Splitter"
       ]
     }
   }

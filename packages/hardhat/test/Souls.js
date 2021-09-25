@@ -1,5 +1,6 @@
 const { time, balance, expectRevert } = require('@openzeppelin/test-helpers');
 
+
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration));
 const { expect } = require("chai");  
 
@@ -36,7 +37,7 @@ describe("Souls", function() {
     snapshot = await provider.send('evm_snapshot', []);
   });
 
-  it('S: proper contract created', async () => {
+  /*it('S: proper contract created', async () => {
     expect(await s.name()).to.equal("Souls");
     expect(await s.symbol()).to.equal("SOULS");
     expect(await s.balanceOf("0xaF69610ea9ddc95883f97a6a3171d52165b69B03")).to.equal("1");
@@ -73,7 +74,6 @@ describe("Souls", function() {
 
     const t = await s.soulsType(tokenId);
     expect(t).to.be.true;
-
   });
 
   it('S: mint 10 soul sketches', async () => {
@@ -138,6 +138,8 @@ describe("Souls", function() {
     const tx = await s.connect(signers[2]).withdrawETH();
     await expect(tx).to.changeEtherBalance(signers[3], ethers.utils.parseEther(dxPrice));
   });
+
+
 
   it("S: hit buyable cap", async () => {
     for(let i = 0; i < 96; i+=1) {
@@ -278,9 +280,54 @@ describe("Souls", function() {
     await s2.connect(signers[1]).transferFrom(accounts[1], accounts[2], tokenId, {gasLimit});
 
     await expect(s3.connect(signers[2]).claimSoul(tokenId, {gasLimit})).to.be.revertedWith("AC_ID ALREADY CLAIMED");
-  });
+  });*/
 
   //tested separately that if 0 layers are drawn, it will be a white square.
   // to do this. change toUint8 to return > 128.
+
+  it('S: test withdraw of funds to split', async () => {
+    const Splitter = await ethers.getContractFactory("Splitter");
+    const sp = await Splitter.deploy();
+    await sp.deployed();
+
+    const SF = await ethers.getContractFactory("SplitFactory");
+    const sf = await SF.deploy(sp.address, accounts[10]); // latter == weth address, but not important for test. 
+    await sf.deployed();
+
+    // root hash for accounts[3] + accounts[4] with 50/50 split.
+    // this was custom generated using the test script from splits repo.
+    const rootHash = '0x3c30c7610231699acc6248ba93b3f480704ba614ded4bd437375c6daf91bf096';
+    const cs = await sf.callStatic.createSplit(rootHash);
+    console.log(cs);
+    const tx = await sf.createSplit(rootHash);
+    const receipt = await tx.wait();
+
+    const SplitProxy = await ethers.getContractFactory("SplitProxy");
+    const proxy = await SplitProxy.attach(cs);
+
+    // new NFT with new recipient
+    const s2 = await S.deploy("Souls", "SOULS3", accounts[2], proxy.address, '100', '3541431094', '0xaF69610ea9ddc95883f97a6a3171d52165b69B03'); // wide campaign window for tests. dates tested separately
+    await s2.connect(signers[5]).mintSoul({value: ethers.utils.parseEther(dxPrice), gasLimit});
+    await expect(s2.connect(signers[1]).withdrawETH()).to.be.revertedWith("NOT_COLLECTOR");
+    const tx2 = await s2.connect(signers[2]).withdrawETH({gasLimit});
+    //await tx2.wait();
+    await expect(tx2).to.changeEtherBalance(proxy, ethers.utils.parseEther(dxPrice)); // proxy received funds
+
+    // now incrementWindow
+    const wrappedProxy = await Splitter.attach(cs);
+    await wrappedProxy.connect(signers[2]).incrementWindow(); // kicks off the proxy
+
+    // claim funds
+    // proofs were generated using the test suite from the splits repo (via mirror).
+    const proof3 = ['0xd2b16e81b4697a13b932890b8d4a8d4c42bd6b5d3a3bd07f88076aff395214dd'];
+    const proof4 = ['0x5acd7e3e41142de32e4123f02edf1ca5b9d81c4648728306d2cfbaaf916ab52b'];
+    let dxPriceHalf = "0.034";
+    const tx3 = await wrappedProxy.connect(signers[2]).claimForAllWindows(accounts[3], 50000000, proof3);
+    await expect(tx3).to.changeEtherBalance(signers[3], ethers.utils.parseEther(dxPriceHalf)); // proxy received funds
+
+    const tx4 = await wrappedProxy.connect(signers[1]).claimForAllWindows(accounts[4], 50000000, proof4);
+    await expect(tx4).to.changeEtherBalance(signers[4], ethers.utils.parseEther(dxPriceHalf)); // proxy received funds
+
+  });
 
 });
