@@ -80,10 +80,10 @@ function IntroPage(props) {
           if(unix >= 1632492000) { disabled = false; }
 
           const newMintHTML = <Fragment>
-            The campaign runs from Friday 24 September 2021 at 14:00:00 GMT and will last until 22 October 14:00 GMT. <br />
+            The campaign ran from Friday 24 September 2021 at 14:00:00 GMT and lasted until 22 October 14:00 GMT. <br />
             <br />
             {props.dfPrice} ETH (~$30). Open, Generative Edition. Available until 22 October 14:00 GMT. <br />
-            <Button size={"small"} disabled={disabled} loading={props.minting} onClick={mintDefaultNFT}>
+            <Button size={"small"} disabled={true} loading={props.minting} onClick={mintDefaultNFT}>
                 Mint Sketched Soul.
             </Button>
             <br />
@@ -96,14 +96,14 @@ function IntroPage(props) {
             <br />
             If you own an Anchor Certificate, enter the ID to claim a fully painted soul for (gas costs only). An ID can only be claimed once. Already claimed IDs will display a very high gas cost and will not proceed. You'll soon (in the following weeks of the campaign) be able to see what IDs have been claimed.<br />
             <br />
-            <Form layout="inline" size="small" form={claimForm} name="control-hooks" onFinish={claimSoul}>
+            <Form layout="inline" size="small"  form={claimForm} name="control-hooks" onFinish={claimSoul}>
             <Form.Item name="certificateID" rules={[
               { required: true,  message: "Certificate ID Required!"}
               ]}>
             <Input /> 
           </Form.Item> 
           <Form.Item>
-            <Button htmlType="submit">
+            <Button disabled={true} htmlType="submit">
             Claim Soul 
             </Button>
           </Form.Item>
@@ -115,7 +115,7 @@ function IntroPage(props) {
           To see what Anchor Certificate IDs you own, fetch it with the button below. If it has already been claimed, it will have a line striked through it. Do not use these IDs. 
           <br />
           <br />
-          <Button onClick={() => getOwnedCerts({ variables: { owner: props.address.toLowerCase() } })}>
+          <Button disabled={true} onClick={() => getOwnedCerts({ variables: { owner: props.address.toLowerCase() } })}>
             Fetch Anchor Certificate IDs
           </Button>
           <br />
@@ -157,7 +157,7 @@ function IntroPage(props) {
         <br />
         <br />
         These painting of forgotten souls can be purchased as NFT memorabilia from the story. They come in the form on-chain generative art NFTs! 
-        From September 24 2021 14:00 GMT until Friday 22 October 2021 (14:00 GMT), fans can mint fully painted or sketched souls.
+        From September 24 2021 14:00 GMT until Friday 22 October 2021 (14:00 GMT), fans minted fully painted or sketched souls. New souls can not be minted anymore.
         <br />
         <br />
         <h2>[] Fully Painted Souls</h2>
