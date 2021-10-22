@@ -168,6 +168,8 @@ function IntroPage(props) {
         <br />
         Each fully painted soul contains 8 layers of the painting, all with various colour palettes + unique randomised derivatives. In total there are over 32 randomised components to each fully painted soul. <br />
         <br />
+        To view the entire collection of 288 paintings, <a href="https://opensea.io/collection/paintings-of-forgotten-souls">view it on OpenSea</a>.<br />
+        <br />
         <h2>[] Sketches</h2>
         Many uploaded minds, as they lose their memory of their old lives in the physical world, lose their ability to depict their loved ones. 
         A sketch has the same features as a fully painted soul, but each layer (of 8) has a 50% chance of being drawn, resulting in various unfinished paintings.
